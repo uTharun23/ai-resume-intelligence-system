@@ -1,0 +1,6 @@
+Flask
+reportlab
+python-docx
+PyPDF2
+Werkzeug
+gunicorn
