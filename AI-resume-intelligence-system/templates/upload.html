@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload & Analyze</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">AI Resume Intelligence</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/builder">Build Resume</a></li>
+                <li><a href="/upload">Upload & Analyze</a></li>
+                <li><a href="/job-match">Job Match</a></li>
+                <li><a href="/career">Career Suggestions</a></li>
+                <li><a href="/report">Report</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-section">
+        <div class="glow-line"></div>
+        <h1>Upload & Analyze Resume</h1>
+        <p class="sub-text">Upload your resume and get a smart score out of 10.</p>
+
+        <form class="form-box" method="POST" enctype="multipart/form-data">
+
+            {% if error %}
+                <p style="color:#fb7185; font-weight:600;">{{ error }}</p>
+            {% endif %}
+
+            <input type="file" name="resume" accept=".pdf,.docx" required>
+
+            <select id="category" name="category" required onchange="updateRoles()">
+                <option value="">Select Category</option>
+                <option value="IT">IT</option>
+                <option value="Non-IT">Non-IT</option>
+            </select>
+
+            <select id="role" name="target_role" required>
+                <option>Select Career Path</option>
+            </select>
+
+            <button type="submit" class="btn primary-btn">Analyze Resume</button>
+        </form>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

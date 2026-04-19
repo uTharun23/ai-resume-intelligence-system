@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">AI Resume Intelligence</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/builder">Build Resume</a></li>
+                <li><a href="/upload">Upload & Analyze</a></li>
+                <li><a href="/job-match">Job Match</a></li>
+                <li><a href="/career">Career Suggestions</a></li>
+                <li><a href="/report">Report</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% if score is defined %}
+    <section class="page-section">
+        <div class="glow-line"></div>
+        <h1>Resume Analysis Result</h1>
+        <p class="sub-text">
+            Category: <strong>{{ category }}</strong><br>
+            Career Path: <strong>{{ target_role }}</strong>
+        </p>
+
+        <div class="report-grid">
+            <div class="report-card">
+                <h3>Resume Rating</h3>
+                <p class="score">{{ score }} / 10</p>
+                <p>{{ rating_label }}</p>
+            </div>
+
+            <div class="report-card">
+                <h3>Word Count</h3>
+                <p>{{ word_count }} words</p>
+            </div>
+
+            <div class="report-card">
+                <h3>Found Skills</h3>
+                <p>
+                    {% if found_skills %}
+                        {{ found_skills | join(', ') }}
+                    {% else %}
+                        No matching skills found
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="report-card">
+                <h3>Missing Skills</h3>
+                <p>
+                    {% if missing_skills %}
+                        {{ missing_skills | join(', ') }}
+                    {% else %}
+                        No major skills missing
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="report-grid" style="margin-top:24px;">
+            <div class="report-card">
+                <h3>Section Check</h3>
+                <p>
+                    {% for section, present in sections.items() %}
+                        {{ section }}: {{ "Present" if present else "Missing" }}<br>
+                    {% endfor %}
+                </p>
+            </div>
+
+            <div class="report-card">
+                <h3>Suggestions</h3>
+                <p>
+                    {% if feedback %}
+                        {% for item in feedback %}
+                            • {{ item }}<br>
+                        {% endfor %}
+                    {% else %}
+                        Your resume looks strong.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section class="page-section">
+        <div class="glow-line"></div>
+        <h1>No Analysis Data</h1>
+        <p class="sub-text">Upload a resume first to see the result.</p>
+        <div style="text-align:center;">
+            <a href="/upload" class="btn primary-btn">Go to Upload</a>
+        </div>
+    </section>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

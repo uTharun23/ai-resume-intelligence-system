@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Resume Builder</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">AI Resume Intelligence</div>
+    </div>
+</nav>
+
+<section class="page-section">
+
+<h1 class="main-title">Premium Resume Builder</h1>
+<p class="sub-text">Build and preview your resume in real-time</p>
+
+<div class="builder-container">
+
+<!-- FORM -->
+<form method="POST" action="/generate-resume" class="form-box">
+
+<input type="text" name="name" placeholder="Full Name" oninput="updatePreview()" required>
+<input type="email" name="email" placeholder="Email" oninput="updatePreview()">
+<input type="text" name="phone" placeholder="Phone" oninput="updatePreview()">
+<input type="text" name="linkedin" placeholder="LinkedIn" oninput="updatePreview()">
+
+<textarea name="summary" placeholder="Summary" oninput="updatePreview()"></textarea>
+<textarea name="skills" placeholder="Skills (comma separated)" oninput="updatePreview()"></textarea>
+<textarea name="projects" placeholder="Projects" oninput="updatePreview()"></textarea>
+<textarea name="education" placeholder="Education" oninput="updatePreview()"></textarea>
+<textarea name="experience" placeholder="Experience" oninput="updatePreview()"></textarea>
+
+<button class="btn primary-btn">Download Resume</button>
+
+</form>
+
+<!-- LIVE PREVIEW -->
+<div class="resume-preview">
+
+<h2 id="p_name">Your Name</h2>
+<p id="p_contact">Email | Phone | LinkedIn</p>
+
+<h3>Summary</h3>
+<p id="p_summary"></p>
+
+<h3>Skills</h3>
+<p id="p_skills"></p>
+
+<h3>Projects</h3>
+<p id="p_projects"></p>
+
+<h3>Education</h3>
+<p id="p_education"></p>
+
+<h3>Experience</h3>
+<p id="p_experience"></p>
+
+</div>
+
+</div>
+
+</section>
+
+<script>
+function updatePreview() {
+    const form = document.querySelector("form");
+
+    document.getElementById("p_name").innerText = form.name.value || "Your Name";
+    document.getElementById("p_contact").innerText =
+        (form.email.value || "Email") + " | " +
+        (form.phone.value || "Phone") + " | " +
+        (form.linkedin.value || "LinkedIn");
+
+    document.getElementById("p_summary").innerText = form.summary.value;
+    document.getElementById("p_skills").innerText = form.skills.value;
+    document.getElementById("p_projects").innerText = form.projects.value;
+    document.getElementById("p_education").innerText = form.education.value;
+    document.getElementById("p_experience").innerText = form.experience.value;
+}
+</script>
+
+</body>
+</html>
