@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">AI Resume Intelligence</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/builder">Build Resume</a></li>
+                <li><a href="/upload">Upload & Analyze</a></li>
+                <li><a href="/job-match">Job Match</a></li>
+                <li><a href="/career">Career</a></li>
+                <li><a href="/report" class="active">Report</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-section">
+        <div class="glow-line"></div>
+        <h1 class="main-title">📊 Resume Report</h1>
+        <p class="sub-text">Your complete AI-powered analysis summary</p>
+
+        <div class="report-grid">
+            <div class="report-card">
+                <h3>Score</h3>
+                <p class="score">8 / 10</p>
+            </div>
+
+            <div class="report-card">
+                <h3>Strengths</h3>
+                <p>Good skills, clear structure</p>
+            </div>
+
+            <div class="report-card">
+                <h3>Weakness</h3>
+                <p>Projects can be improved</p>
+            </div>
+
+            <div class="report-card">
+                <h3>Suggestions</h3>
+                <p>Add real-world projects and achievements</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="/download-report" class="btn primary-btn">Download PDF Report</a>
+        </div>
+    </section>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chat-toggle" onclick="toggleChat()">💬</div>
+
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">AI Assistant</div>
+
+            <div id="chat-messages" class="chat-messages"></div>
+
+            <div class="chat-actions">
+                <button onclick="setMode('chat')">Chat</button>
+                <button onclick="setMode('resume')">Resume</button>
+                <button onclick="setMode('rewrite')">Rewrite</button>
+            </div>
+
+            <div class="chat-input-box">
+                <input id="chat-input" placeholder="Ask about your report...">
+                <button onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

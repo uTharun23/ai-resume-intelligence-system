@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+uploads/
+generated_resume.pdf
+report.pdf
+.env
+venv/

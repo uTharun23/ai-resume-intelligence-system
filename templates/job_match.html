@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Match</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="logo">AI Resume Intelligence</div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/builder">Build Resume</a></li>
+                <li><a href="/upload">Upload & Analyze</a></li>
+                <li><a href="/job-match" class="active">Job Match</a></li>
+                <li><a href="/career">Career</a></li>
+                <li><a href="/report">Report</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-section">
+        <div class="glow-line"></div>
+        <h1 class="main-title">Resume vs Job Match</h1>
+        <p class="sub-text">
+            Upload your resume, choose category and career path, then paste a job description.
+        </p>
+
+        <form class="form-box center-form" method="POST" enctype="multipart/form-data">
+            {% if error %}
+                <p class="error-text">{{ error }}</p>
+            {% endif %}
+
+            <input type="file" name="resume" accept=".pdf,.docx" required>
+
+            <select id="category" name="category" required onchange="updateRolesForJobMatch()">
+                <option value="">Select Category</option>
+                <option value="IT" {% if category == "IT" %}selected{% endif %}>IT</option>
+                <option value="Non-IT" {% if category == "Non-IT" %}selected{% endif %}>Non-IT</option>
+            </select>
+
+            <select id="job_role" name="target_role" required>
+                <option value="">Select Career Path</option>
+            </select>
+
+            <textarea name="job_description" placeholder="Paste job description here..." required>{% if job_description %}{{ job_description }}{% endif %}</textarea>
+
+            <button type="submit" class="btn primary-btn">Check Match</button>
+        </form>
+
+        {% if match_score is defined %}
+        <div class="results-wrap">
+            <div class="report-grid">
+                <div class="report-card">
+                    <h3>Match Score</h3>
+                    <p class="score">{{ match_score }} / 10</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ match_score * 10 }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <h3>Category</h3>
+                    <p>{{ category }}</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>Career Path</h3>
+                    <p>{{ target_role }}</p>
+                </div>
+
+                <div class="report-card">
+                    <h3>Recommended Roles</h3>
+                    <p>
+                        {% if recommended_roles %}
+                            {{ recommended_roles | join(', ') }}
+                        {% else %}
+                            No suggestions available
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="report-grid second-grid">
+                <div class="report-card">
+                    <h3>Matched Keywords</h3>
+                    <p>
+                        {% if matched_keywords %}
+                            {{ matched_keywords | join(', ') }}
+                        {% else %}
+                            No strong keyword matches found
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="report-card">
+                    <h3>Missing Keywords</h3>
+                    <p>
+                        {% if missing_keywords %}
+                            {{ missing_keywords | join(', ') }}
+                        {% else %}
+                            No important keywords missing
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="report-grid second-grid">
+                <div class="report-card">
+                    <h3>Suggestions</h3>
+                    <p>
+                        {% if suggestions %}
+                            {% for item in suggestions %}
+                                • {{ item }}<br>
+                            {% endfor %}
+                        {% else %}
+                            Your resume matches well.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="download-wrap">
+                <a href="/download-report" class="btn primary-btn">Download PDF Report</a>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+    <div class="chatbot-fab" onclick="toggleChat()">💬</div>
+
+    <div class="chatbot-panel" id="chat-window">
+        <div class="chatbot-header">
+            <span>AI Assistant</span>
+            <button type="button" class="chatbot-close" onclick="toggleChat()">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages"></div>
+
+        <div class="chat-actions">
+            <button type="button" onclick="setMode('chat')">Chat</button>
+            <button type="button" onclick="setMode('resume')">Resume</button>
+            <button type="button" onclick="setMode('rewrite')">Rewrite</button>
+        </div>
+
+        <div class="chat-input-box">
+            <input id="chat-input" type="text" placeholder="Ask about resume, jobs, skills...">
+            <button type="button" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const category = document.getElementById("category");
+            const roleDropdown = document.getElementById("job_role");
+            const selectedRole = {{ target_role|tojson if target_role is defined else '""' }};
+
+            if (category.value) {
+                updateRolesForJobMatch();
+                if (selectedRole) {
+                    roleDropdown.value = selectedRole;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
