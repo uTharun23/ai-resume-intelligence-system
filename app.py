@@ -70,7 +70,42 @@ def generate_resume():
         t_font = 'Helvetica-Bold'
         b_font = 'Helvetica'
         align = 0  # Left aligned
-    else:  # tech
+    elif theme == "minimal":
+        p_color = colors.HexColor('#475569')
+        t_font = 'Helvetica-Bold'
+        b_font = 'Helvetica'
+        align = 0
+    elif theme == "creative":
+        p_color = colors.HexColor('#ea580c')
+        t_font = 'Helvetica-Bold'
+        b_font = 'Helvetica'
+        align = 0
+    elif theme == "academic":
+        p_color = colors.HexColor('#111827')
+        t_font = 'Times-Bold'
+        b_font = 'Times-Roman'
+        align = 1  # Centered
+    elif theme == "bold":
+        p_color = colors.HexColor('#991b1b')
+        t_font = 'Helvetica-Bold'
+        b_font = 'Helvetica'
+        align = 0
+    elif theme == "startup":
+        p_color = colors.HexColor('#7e22ce')
+        t_font = 'Courier-Bold'
+        b_font = 'Courier'
+        align = 0
+    elif theme == "luxury":
+        p_color = colors.HexColor('#b45309')
+        t_font = 'Times-Bold'
+        b_font = 'Times-Roman'
+        align = 0
+    elif theme == "emerald":
+        p_color = colors.HexColor('#047857')
+        t_font = 'Helvetica-Bold'
+        b_font = 'Helvetica'
+        align = 0
+    else:  # tech (default)
         p_color = colors.HexColor('#0891b2')
         t_font = 'Courier-Bold'
         b_font = 'Courier'
