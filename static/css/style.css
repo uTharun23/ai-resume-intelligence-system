@@ -450,7 +450,7 @@ a {
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-main);
-    margin-bottom: -12px;
+    margin-bottom: 8px;
     display: block;
 }
 
