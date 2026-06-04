@@ -1,12 +1,5 @@
 # ✦ AI Resume Intelligence System ✦
 
-<div align="center">
-
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Application-22d3ee?style=for-the-badge&logo=render&logoColor=030712)](https://ai-resume-intelligence-system.onrender.com/)
-[![Python Version](https://img.shields.io/badge/Python-3.9+-6366f1?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Framework](https://img.shields.io/badge/Flask-2.0+-d946ef?style=flat-square&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
-[![Styling](https://img.shields.io/badge/Theme-Glassmorphism_Dark-060913?style=flat-square&logo=css3&logoColor=22d3ee)](https://github.com/uTharun23/ai-resume-intelligence-system)
-
 An advanced, premium-styled AI-powered resume intelligence portal. Built to help job seekers, students, and freshers bridge career skill gaps, analyze matching requirements for specific roles, and compile professional resumes with real-time visual themes.
 
 [**🔗 Visit Live Demo Application**](https://ai-resume-intelligence-system.onrender.com/)
