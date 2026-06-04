@@ -1,107 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Resume Intelligence System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <div class="logo">AI Resume Intelligence</div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/builder">Build Resume</a></li>
-                <li><a href="/upload">Upload & Analyze</a></li>
-                <li><a href="/job-match">Job Match</a></li>
-                <li><a href="/career">Career Suggestions</a></li>
-                <li><a href="/report">Report</a></li>
-            </ul>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">Smart • Reliable • Professional</div>
-            <h1>Build Better Careers with <span>AI Resume Intelligence</span></h1>
-            <p>
-                Create a new resume or upload your existing resume for instant analysis,
-                skill-gap detection, job matching, career guidance, and improvement suggestions.
-            </p>
+{% block title %}Home | AI Resume Intelligence System{% endblock %}
 
-            <div class="hero-buttons">
-                <a href="/builder" class="btn primary-btn">Build Resume</a>
-                <a href="/upload" class="btn secondary-btn">Upload & Analyze</a>
-            </div>
-
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <h3>10/10</h3>
-                    <p>Simple resume rating system</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Role-Based</h3>
-                    <p>Targeted career suggestions</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Fast Analysis</h3>
-                    <p>Quick and efficient results</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="features reveal">
-        <div class="glow-line"></div>
-        <h2 class="section-title">Core Features</h2>
-        <p class="section-subtitle">
-            A complete smart resume platform for students, freshers, and job seekers.
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Smart • Predictive • Professional</div>
+        <h1>Build Better Careers with <span>AI Intelligence</span></h1>
+        <p>
+            Supercharge your job applications. Instantly build, grade, and audit your resume 
+            using role-based skill analytics, real-time keywords matching, and direct career navigation.
         </p>
 
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📄</div>
-                <h3>Resume Builder</h3>
-                <p>Create a clean and professional resume with structured sections.</p>
-            </div>
+        <div class="hero-buttons">
+            <a href="/builder" class="btn primary-btn">Build Resume ✦</a>
+            <a href="/upload" class="btn secondary-btn">Upload & Analyze</a>
+        </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">📤</div>
-                <h3>Direct Upload</h3>
-                <p>Upload an existing resume and analyze it instantly.</p>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <h3>10 / 10</h3>
+                <p>Objective resume grading system</p>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">⭐</div>
-                <h3>Rating Out of 10</h3>
-                <p>Get a simple and understandable resume quality score.</p>
+            <div class="stat-card">
+                <h3>Role-Aligned</h3>
+                <p>Targeted career suggestions</p>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3>Missing Skills Detection</h3>
-                <p>Compare your resume with role-based skill requirements.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Job Match</h3>
-                <p>Paste a job description and measure your resume match level.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🚀</div>
-                <h3>Career Suggestions</h3>
-                <p>Get role recommendations, certifications, and project ideas.</p>
+            <div class="stat-card">
+                <h3>Instant Audit</h3>
+                <p>Advanced keyword matching speed</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer class="footer">
-        AI Resume Intelligence System with Career Recommendations
-    </footer>
+<section class="features reveal">
+    <div class="glow-line"></div>
+    <h2 class="section-title">Core Capability Modules</h2>
+    <p class="section-subtitle">
+        A comprehensive intelligent resume intelligence workflow designed to land interviews.
+    </p>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">📄</div>
+            <h3>Resume Builder</h3>
+            <p>Assemble standard professional resumes using real-time style templates and instant page renderings.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📤</div>
+            <h3>Direct Upload</h3>
+            <p>Submit your current PDF or DOCX file to run a deep-scan audit on formatting and structures.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <h3>Grading & Scorecard</h3>
+            <p>Understand how recruiters view your profile through clean quantitative indicators out of 10.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>Skill-Gap Analyzer</h3>
+            <p>Determine exactly what keywords and engineering tools are missing for your desired career target.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Job-Description Match</h3>
+            <p>Paste target job descriptions to analyze keyword density overlap and compatibility.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3>Career Navigation</h3>
+            <p>Get customized recommendations for certifications, projects, and developmental milestones.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

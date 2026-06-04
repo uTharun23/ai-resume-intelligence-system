@@ -1,67 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Suggestions</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-<nav class="navbar">
-    <div class="navbar-inner">
-        <div class="logo">AI Resume Intelligence</div>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/builder">Build Resume</a></li>
-            <li><a href="/upload">Upload & Analyze</a></li>
-            <li><a href="/job-match">Job Match</a></li>
-            <li><a href="/career" class="active">Career Suggestions</a></li>
-            <li><a href="/report">Report</a></li>
-        </ul>
-    </div>
-</nav>
+{% block title %}Career Guidance | AI Resume Intelligence System{% endblock %}
 
+{% block content %}
 <section class="page-section">
     <div class="glow-line"></div>
-
     <h1 class="main-title">AI Career Guidance</h1>
-    <p class="sub-text">Upload your resume and get personalized career direction, skills, and project ideas.</p>
+    <p class="sub-text">Upload your resume to get automated career recommendations, certification roadmaps, and project ideas.</p>
 
-    <form class="form-box center-form" method="POST" enctype="multipart/form-data">
+    <!-- Upload Form -->
+    <form class="form-box" method="POST" enctype="multipart/form-data" id="career-form">
         {% if error %}
             <p class="error-text">{{ error }}</p>
         {% endif %}
 
-        <input type="file" name="resume" required>
-        <button class="btn primary-btn">Get Suggestions</button>
+        <!-- Drag & Drop Zone -->
+        <div class="upload-zone" id="drop-zone">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">
+                <h4 id="file-display-name">Drag & Drop Resume Here</h4>
+                <p>or click to browse local files (PDF & DOCX supported)</p>
+            </div>
+            <input type="file" id="resume-file" name="resume" accept=".pdf,.docx" required onchange="handleFileSelected(this)">
+        </div>
+
+        <button type="submit" class="btn primary-btn" style="margin-top: 10px;">Generate Career Roadmap ✦</button>
     </form>
 
+    <!-- Roadmap Output -->
     {% if career_paths %}
-    <div class="report-grid" style="margin-top:40px;">
+    <div style="max-width: 800px; margin: 50px auto 0;">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 24px; text-align: center;">
+            🎯 Your AI-Generated Career Roadmap
+        </h3>
+        
+        <div class="timeline">
+            <!-- Career Paths -->
+            <div class="timeline-item reveal active">
+                <div class="timeline-card">
+                    <h4>🚀 Recommended Career Pathways</h4>
+                    <p style="margin-bottom: 10px;">Based on your current skill keywords, you are highly aligned with the following positions:</p>
+                    <div class="skills-list">
+                        {% for path in career_paths %}
+                            <span class="skill-tag found" style="background: rgba(99, 102, 241, 0.08); color: #818cf8; border-color: rgba(99, 102, 241, 0.2);">{{ path }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
 
-        <!-- Career Paths -->
-        <div class="report-card reveal">
-            <h3>🚀 Career Paths</h3>
-            <p>{{ career_paths | join(', ') }}</p>
+            <!-- Skills to Learn -->
+            <div class="timeline-item reveal active">
+                <div class="timeline-card">
+                    <h4>📚 Skills to Learn (Knowledge Gaps)</h4>
+                    <p style="margin-bottom: 10px;">Acquiring these key capabilities will open up more opportunities in your target domains:</p>
+                    <div class="skills-list">
+                        {% for skill in skills %}
+                            <span class="skill-tag missing">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects to Build -->
+            <div class="timeline-item reveal active">
+                <div class="timeline-card">
+                    <h4>💡 Recommended Portfolio Projects</h4>
+                    <p style="margin-bottom: 10px;">Develop these academic or personal projects to build out your resume sections and prove practical competency:</p>
+                    <div class="skills-list">
+                        {% for project in projects %}
+                            <span class="skill-tag found" style="background: rgba(34, 211, 238, 0.08); color: #22d3ee; border-color: rgba(34, 211, 238, 0.2);">{{ project }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Skills -->
-        <div class="report-card reveal">
-            <h3>📚 Skills to Learn</h3>
-            <p>{{ skills | join(', ') }}</p>
-        </div>
-
-        <!-- Projects -->
-        <div class="report-card reveal">
-            <h3>💡 Project Ideas</h3>
-            <p>{{ projects | join(', ') }}</p>
-        </div>
-
     </div>
     {% endif %}
 </section>
+{% endblock %}
 
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+{% block extra_js %}
+<script>
+    // Drag & drop handlers
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('resume-file');
+    const fileDisplayName = document.getElementById('file-display-name');
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    }
+
+    function unhighlight(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+    }
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        let dt = e.dataTransfer;
+        let files = dt.files;
+        fileInput.files = files;
+        handleFileSelected(fileInput);
+    }
+
+    function handleFileSelected(input) {
+        if (input.files && input.files[0]) {
+            const fileName = input.files[0].name;
+            fileDisplayName.innerText = `📄 Selected: ${fileName}`;
+            dropZone.style.borderColor = 'var(--primary)';
+            dropZone.style.background = 'rgba(34, 211, 238, 0.04)';
+        } else {
+            fileDisplayName.innerText = "Drag & Drop Resume Here";
+            dropZone.style.borderColor = 'var(--border-glass)';
+            dropZone.style.background = 'rgba(255, 255, 255, 0.01)';
+        }
+    }
+</script>
+{% endblock %}

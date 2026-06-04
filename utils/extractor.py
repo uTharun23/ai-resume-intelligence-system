@@ -27,10 +27,13 @@ def extract_text_from_docx(file_path):
 
 def extract_resume_text(file_path, filename):
     filename = filename.lower()
-
-    if filename.endswith(".pdf"):
-        return extract_text_from_pdf(file_path)
-    elif filename.endswith(".docx"):
-        return extract_text_from_docx(file_path)
-    else:
+    try:
+        if filename.endswith(".pdf"):
+            return extract_text_from_pdf(file_path)
+        elif filename.endswith(".docx"):
+            return extract_text_from_docx(file_path)
+        else:
+            return ""
+    except Exception as e:
+        print(f"Error parsing {filename}: {e}")
         return ""

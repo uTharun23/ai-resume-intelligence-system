@@ -1,89 +1,158 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Resume Builder</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}Resume Builder | AI Resume Intelligence System{% endblock %}
 
-<nav class="navbar">
-    <div class="navbar-inner">
-        <div class="logo">AI Resume Intelligence</div>
-    </div>
-</nav>
-
+{% block content %}
 <section class="page-section">
+    <div class="glow-line"></div>
+    <h1 class="main-title">Premium Resume Builder</h1>
+    <p class="sub-text">Build your resume with responsive fields and download a tailored PDF matching your chosen theme.</p>
 
-<h1 class="main-title">Premium Resume Builder</h1>
-<p class="sub-text">Build and preview your resume in real-time</p>
+    <!-- Theme / Style Selector Chips -->
+    <div style="max-width: 800px; margin: 0 auto 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <label style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">Select Document Theme:</label>
+        <div class="style-selector">
+            <div class="style-chip active" onclick="setResumeTheme('tech')">👾 Modern Tech</div>
+            <div class="style-chip" onclick="setResumeTheme('classic')">📜 Classic Ivory</div>
+            <div class="style-chip" onclick="setResumeTheme('executive')">💼 Executive Navy</div>
+        </div>
+    </div>
 
-<div class="builder-container">
+    <div class="builder-layout">
+        <!-- Input Form -->
+        <form method="POST" action="/generate-resume" class="form-box" style="margin: 0;">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">Personal Information</h3>
+            
+            <input type="hidden" name="resume_style" id="resume_style_input" value="tech">
 
-<!-- FORM -->
-<form method="POST" action="/generate-resume" class="form-box">
+            <div class="form-row">
+                <div>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" oninput="updatePreview()" required>
+                </div>
+                <div>
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="johndoe@example.com" oninput="updatePreview()">
+                </div>
+            </div>
 
-<input type="text" name="name" placeholder="Full Name" oninput="updatePreview()" required>
-<input type="email" name="email" placeholder="Email" oninput="updatePreview()">
-<input type="text" name="phone" placeholder="Phone" oninput="updatePreview()">
-<input type="text" name="linkedin" placeholder="LinkedIn" oninput="updatePreview()">
+            <div class="form-row">
+                <div>
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" placeholder="+1 (555) 019-2834" oninput="updatePreview()">
+                </div>
+                <div>
+                    <label for="linkedin">LinkedIn URL</label>
+                    <input type="text" id="linkedin" name="linkedin" placeholder="linkedin.com/in/johndoe" oninput="updatePreview()">
+                </div>
+            </div>
 
-<textarea name="summary" placeholder="Summary" oninput="updatePreview()"></textarea>
-<textarea name="skills" placeholder="Skills (comma separated)" oninput="updatePreview()"></textarea>
-<textarea name="projects" placeholder="Projects" oninput="updatePreview()"></textarea>
-<textarea name="education" placeholder="Education" oninput="updatePreview()"></textarea>
-<textarea name="experience" placeholder="Experience" oninput="updatePreview()"></textarea>
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; margin-top: 15px; margin-bottom: 10px; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">Resume Sections</h3>
 
-<button class="btn primary-btn">Download Resume</button>
+            <div>
+                <label for="summary">Professional Summary</label>
+                <textarea id="summary" name="summary" placeholder="Motivated software engineer with experience building web apps..." oninput="updatePreview()"></textarea>
+            </div>
 
-</form>
+            <div>
+                <label for="skills">Skills (separated by commas)</label>
+                <textarea id="skills" name="skills" placeholder="Python, JavaScript, SQL, Flask, Git, Agile Development" oninput="updatePreview()"></textarea>
+            </div>
 
-<!-- LIVE PREVIEW -->
-<div class="resume-preview">
+            <div>
+                <label for="projects">Key Projects</label>
+                <textarea id="projects" name="projects" placeholder="AI Resume Analyzer: Built Python-based resume scoring tool with 85% parsing accuracy." oninput="updatePreview()"></textarea>
+            </div>
 
-<h2 id="p_name">Your Name</h2>
-<p id="p_contact">Email | Phone | LinkedIn</p>
+            <div class="form-row">
+                <div>
+                    <label for="education">Education</label>
+                    <textarea id="education" name="education" placeholder="B.S. Computer Science, State University (2022-2026)" oninput="updatePreview()"></textarea>
+                </div>
+                <div>
+                    <label for="experience">Work Experience</label>
+                    <textarea id="experience" name="experience" placeholder="Software Engineer Intern, Tech Corp (Summer 2025)" oninput="updatePreview()"></textarea>
+                </div>
+            </div>
 
-<h3>Summary</h3>
-<p id="p_summary"></p>
+            <button type="submit" class="btn primary-btn" style="margin-top: 10px;">Download PDF Resume ✦</button>
+        </form>
 
-<h3>Skills</h3>
-<p id="p_skills"></p>
-
-<h3>Projects</h3>
-<p id="p_projects"></p>
-
-<h3>Education</h3>
-<p id="p_education"></p>
-
-<h3>Experience</h3>
-<p id="p_experience"></p>
-
-</div>
-
-</div>
-
+        <!-- Sticky Live Preview -->
+        <div class="resume-preview-panel">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                <span>👁️</span> Real-time Document Preview
+            </h3>
+            
+            <div id="resume-paper" class="resume-paper style-tech">
+                <h2 id="p_name">Your Name</h2>
+                <div id="p_contact" class="resume-contact">Email | Phone | LinkedIn</div>
+                
+                <h3>Professional Summary</h3>
+                <div id="p_summary" class="resume-section-body">Professional summary will appear here. Summarize your experience and strengths.</div>
+                
+                <h3>Technical Skills</h3>
+                <div id="p_skills" class="resume-section-body">Core competencies and key skills will appear here.</div>
+                
+                <h3>Academic & Personal Projects</h3>
+                <div id="p_projects" class="resume-section-body">Highlight your key projects, tech stacks, and outcomes.</div>
+                
+                <h3>Education</h3>
+                <div id="p_education" class="resume-section-body">Detail your academic degree, institution, and graduation year.</div>
+                
+                <h3>Experience</h3>
+                <div id="p_experience" class="resume-section-body">Summarize your professional work, internships, or training history.</div>
+            </div>
+        </div>
+    </div>
 </section>
+{% endblock %}
 
+{% block extra_js %}
 <script>
 function updatePreview() {
-    const form = document.querySelector("form");
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const linkedin = document.getElementById("linkedin").value.trim();
+    const summary = document.getElementById("summary").value.trim();
+    const skills = document.getElementById("skills").value.trim();
+    const projects = document.getElementById("projects").value.trim();
+    const education = document.getElementById("education").value.trim();
+    const experience = document.getElementById("experience").value.trim();
 
-    document.getElementById("p_name").innerText = form.name.value || "Your Name";
-    document.getElementById("p_contact").innerText =
-        (form.email.value || "Email") + " | " +
-        (form.phone.value || "Phone") + " | " +
-        (form.linkedin.value || "LinkedIn");
+    document.getElementById("p_name").innerText = name || "Your Name";
+    
+    const contactParts = [];
+    if (email) contactParts.push(email);
+    if (phone) contactParts.push(phone);
+    if (linkedin) contactParts.push(linkedin);
+    document.getElementById("p_contact").innerText = contactParts.length > 0 ? contactParts.join(" | ") : "Email | Phone | LinkedIn";
 
-    document.getElementById("p_summary").innerText = form.summary.value;
-    document.getElementById("p_skills").innerText = form.skills.value;
-    document.getElementById("p_projects").innerText = form.projects.value;
-    document.getElementById("p_education").innerText = form.education.value;
-    document.getElementById("p_experience").innerText = form.experience.value;
+    document.getElementById("p_summary").innerText = summary || "Professional summary will appear here. Summarize your experience and strengths.";
+    document.getElementById("p_skills").innerText = skills || "Core competencies and key skills will appear here.";
+    document.getElementById("p_projects").innerText = projects || "Highlight your key projects, tech stacks, and outcomes.";
+    document.getElementById("p_education").innerText = education || "Detail your academic degree, institution, and graduation year.";
+    document.getElementById("p_experience").innerText = experience || "Summarize your professional work, internships, or training history.";
+}
+
+function setResumeTheme(themeName) {
+    // Update active class on chips
+    const chips = document.querySelectorAll(".style-chip");
+    chips.forEach(chip => chip.classList.remove("active"));
+    
+    // Find the clicked chip
+    let chipIndex = 0;
+    if (themeName === 'classic') chipIndex = 1;
+    else if (themeName === 'executive') chipIndex = 2;
+    chips[chipIndex].classList.add("active");
+    
+    // Update input value
+    document.getElementById("resume_style_input").value = themeName;
+    
+    // Update preview class
+    const paper = document.getElementById("resume-paper");
+    paper.className = "resume-paper style-" + themeName;
 }
 </script>
-
-</body>
-</html>
+{% endblock %}

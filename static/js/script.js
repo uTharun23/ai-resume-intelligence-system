@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // =========================
-    // SCROLL REVEAL ANIMATION
-    // =========================
+    // ==========================================
+    // 1. SCROLL REVEAL ANIMATION (INTERACTIONS)
+    // ==========================================
     const revealElements = document.querySelectorAll(".reveal");
 
     function revealOnScroll() {
-        const triggerBottom = window.innerHeight * 0.85;
+        const triggerBottom = window.innerHeight * 0.88;
 
         revealElements.forEach((element) => {
             const boxTop = element.getBoundingClientRect().top;
-
             if (boxTop < triggerBottom) {
                 element.classList.add("active");
             } else {
@@ -19,44 +18,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.addEventListener("scroll", revealOnScroll);
-    revealOnScroll();
+    revealOnScroll(); // Trigger once on load
 
-    // =========================
-    // ACTIVE NAV LINK
-    // =========================
+    // ==========================================
+    // 2. ACTIVE NAV HIGHLIGHTING
+    // ==========================================
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll(".nav-links a");
 
     navLinks.forEach((link) => {
-        if (link.getAttribute("href") === currentPath) {
+        const href = link.getAttribute("href");
+        if (href === currentPath || (href !== "/" && currentPath.startsWith(href))) {
             link.classList.add("active");
+        } else {
+            link.classList.remove("active");
         }
     });
 
-    // =========================
-    // BUTTON CLICK EFFECT
-    // =========================
+    // ==========================================
+    // 3. CORE BUTTON INTERACTIVE MICRO-TRANSFORMS
+    // ==========================================
     const buttons = document.querySelectorAll(".btn");
-
     buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            btn.style.transform = "scale(0.95)";
-            setTimeout(() => {
-                btn.style.transform = "";
-            }, 150);
+        btn.addEventListener("mousedown", () => {
+            btn.style.transform = "scale(0.96) translateY(-2px)";
+        });
+        btn.addEventListener("mouseup", () => {
+            btn.style.transform = "";
+        });
+        btn.addEventListener("mouseleave", () => {
+            btn.style.transform = "";
         });
     });
 
-    // =========================
-    // CHATBOT INIT
-    // =========================
+    // ==========================================
+    // 4. FLOATING AI ASSISTANT CHATBOT INITIALIZER
+    // ==========================================
     initializeChatbot();
 });
 
-
-// =========================
-// ROLE DROPDOWN SYSTEM
-// =========================
+// ==========================================
+// 5. ROLE DROPDOWN SYSTEMS (IT / NON-IT)
+// ==========================================
 function getCareerRoles(category) {
     const roles = {
         "IT": [
@@ -74,7 +77,6 @@ function getCareerRoles(category) {
             "Business Analyst"
         ]
     };
-
     return roles[category] || [];
 }
 
@@ -112,10 +114,9 @@ function updateRolesForJobMatch() {
     });
 }
 
-
-// =========================
-// FLOATING CHATBOT SYSTEM
-// =========================
+// ==========================================
+// 6. FLOATING CHATBOT CORE LOGIC
+// ==========================================
 let mode = "chat";
 
 const CHAT_STORAGE_KEY = "ai_resume_chat_history";
@@ -134,7 +135,14 @@ function initializeChatbot() {
     if (chat.innerHTML.trim() === "") {
         const welcomeMessage = `
             <div class="ai-msg">
-                Hi 👋 I can help with resume writing, rewriting, jobs, skills, and career guidance.
+                <p>Hi 👋 I am your <strong>AI Resume Assistant</strong>!</p>
+                <p>I can help you with:</p>
+                <ul>
+                    <li>Drafting summary statements</li>
+                    <li>Analyzing job matching mechanics</li>
+                    <li>Recommending targeted IT/Non-IT project ideas</li>
+                </ul>
+                <p>Type a question or select a quick shortcut chip below to get started!</p>
             </div>
         `;
         chat.innerHTML = welcomeMessage;
@@ -146,10 +154,24 @@ function toggleChat() {
     const chatWindow = document.getElementById("chat-window");
     if (!chatWindow) return;
 
-    const isOpen = chatWindow.style.display === "flex";
-    chatWindow.style.display = isOpen ? "none" : "flex";
-
-    localStorage.setItem(CHAT_OPEN_KEY, isOpen ? "closed" : "open");
+    const isOpen = chatWindow.classList.contains("open");
+    if (isOpen) {
+        chatWindow.classList.remove("open");
+        // Wait for CSS slide transition, then close panel display
+        setTimeout(() => {
+            if (!chatWindow.classList.contains("open")) {
+                chatWindow.style.display = "none";
+            }
+        }, 300);
+        localStorage.setItem(CHAT_OPEN_KEY, "closed");
+    } else {
+        chatWindow.style.display = "flex";
+        // Force reflow for CSS transitions
+        chatWindow.offsetHeight;
+        chatWindow.classList.add("open");
+        localStorage.setItem(CHAT_OPEN_KEY, "open");
+        scrollChatToBottom();
+    }
 }
 
 function setMode(selectedMode) {
@@ -160,19 +182,17 @@ function setMode(selectedMode) {
 
 function highlightSelectedModeButton() {
     const buttons = document.querySelectorAll(".chat-actions button");
-
     buttons.forEach((btn) => {
-        btn.style.background = "#1e293b";
-        btn.style.color = "#e2e8f0";
+        btn.classList.remove("active");
     });
 
-    const selected = Array.from(buttons).find(
-        (btn) => btn.innerText.trim().toLowerCase() === mode
-    );
+    let targetId = "btn-mode-chat";
+    if (mode === "resume") targetId = "btn-mode-resume";
+    else if (mode === "rewrite") targetId = "btn-mode-rewrite";
 
-    if (selected) {
-        selected.style.background = "#60a5fa";
-        selected.style.color = "#06111f";
+    const selectedBtn = document.getElementById(targetId);
+    if (selectedBtn) {
+        selectedBtn.classList.add("active");
     }
 }
 
@@ -188,9 +208,16 @@ async function sendMessage() {
     appendUserMessage(msg);
     input.value = "";
 
+    // Render premium dynamic typing indicator dots
     const loading = document.createElement("div");
     loading.className = "ai-msg";
-    loading.innerText = "Typing...";
+    loading.innerHTML = `
+        <div class="typing-dots">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+    `;
     chat.appendChild(loading);
     scrollChatToBottom();
 
@@ -207,13 +234,21 @@ async function sendMessage() {
         });
 
         const data = await res.json();
-
         loading.remove();
-        appendAiMessage(data.reply || "No response received.");
+        
+        // Render with markdown parsing format support
+        appendAiMessage(data.reply || "No response received from assistant.");
     } catch (error) {
         loading.remove();
-        appendAiMessage("⚠️ Server error");
+        appendAiMessage("⚠️ <strong>Server Connection Error:</strong> Unable to reach the assistant. Please ensure the backend server is running.");
     }
+}
+
+function sendSuggestedPrompt(promptText) {
+    const input = document.getElementById("chat-input");
+    if (!input) return;
+    input.value = promptText;
+    sendMessage();
 }
 
 function appendUserMessage(message) {
@@ -229,7 +264,7 @@ function appendAiMessage(message) {
     const chat = document.getElementById("chat-messages");
     if (!chat) return;
 
-    chat.innerHTML += `<div class="ai-msg">${escapeHtml(message)}</div>`;
+    chat.innerHTML += `<div class="ai-msg">${formatMarkdown(message)}</div>`;
     saveChatMessages();
     scrollChatToBottom();
 }
@@ -237,14 +272,12 @@ function appendAiMessage(message) {
 function scrollChatToBottom() {
     const chat = document.getElementById("chat-messages");
     if (!chat) return;
-
     chat.scrollTop = chat.scrollHeight;
 }
 
 function saveChatMessages() {
     const chat = document.getElementById("chat-messages");
     if (!chat) return;
-
     localStorage.setItem(CHAT_STORAGE_KEY, chat.innerHTML);
 }
 
@@ -273,27 +306,31 @@ function restoreChatWindowState() {
     const savedState = localStorage.getItem(CHAT_OPEN_KEY);
     if (savedState === "open") {
         chatWindow.style.display = "flex";
+        chatWindow.classList.add("open");
     } else {
         chatWindow.style.display = "none";
+        chatWindow.classList.remove("open");
     }
 }
 
-function clearChatSession() {
-    localStorage.removeItem(CHAT_STORAGE_KEY);
-    localStorage.removeItem(CHAT_MODE_KEY);
-    localStorage.removeItem(CHAT_OPEN_KEY);
-
-    const chat = document.getElementById("chat-messages");
-    if (chat) {
-        chat.innerHTML = `
-            <div class="ai-msg">
-                Hi 👋 I can help with resume writing, rewriting, jobs, skills, and career guidance.
-            </div>
-        `;
-    }
-
-    mode = "chat";
-    highlightSelectedModeButton();
+// Simple Parser for basic markdown in AI responses
+function formatMarkdown(text) {
+    if (!text) return "";
+    let formatted = text;
+    
+    // Bold: **text** -> <strong>text</strong>
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    
+    // Italic: *text* -> <em>text</em>
+    formatted = formatted.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    
+    // New lines to HTML br
+    formatted = formatted.replace(/\n/g, "<br>");
+    
+    // Lists: Bullet lines starting with '- ' or '• ' -> wrapped in standard HTML list tags (handled cleanly via br or custom inline styling)
+    formatted = formatted.replace(/(?:^|<br>)[-•]\s+(.*?)(?=$|<br>)/g, "$1");
+    
+    return formatted;
 }
 
 function escapeHtml(text) {
@@ -302,13 +339,9 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-
-// =========================
-// ENTER KEY SUPPORT
-// =========================
+// Enter Key listeners
 document.addEventListener("keydown", function (e) {
     const input = document.getElementById("chat-input");
-
     if (e.key === "Enter" && document.activeElement === input) {
         e.preventDefault();
         sendMessage();

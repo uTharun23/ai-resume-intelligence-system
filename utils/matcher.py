@@ -3,6 +3,8 @@ from utils.role_data import ROLE_CATEGORIES
 
 
 def clean_words(text):
+    if not text:
+        return set()
     words = re.findall(r"[a-zA-Z0-9+/.-]+", text.lower())
     return {word for word in words if len(word) > 2}
 

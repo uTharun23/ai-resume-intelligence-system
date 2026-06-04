@@ -1,172 +1,209 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Match</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <div class="logo">AI Resume Intelligence</div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/builder">Build Resume</a></li>
-                <li><a href="/upload">Upload & Analyze</a></li>
-                <li><a href="/job-match" class="active">Job Match</a></li>
-                <li><a href="/career">Career</a></li>
-                <li><a href="/report">Report</a></li>
+{% block title %}Job Matching | AI Resume Intelligence System{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="glow-line"></div>
+    <h1 class="main-title">Resume vs Job Description Match</h1>
+    <p class="sub-text">Upload your resume, paste a target job description, and measure keyword alignment scores.</p>
+
+    <!-- Match Form -->
+    <form class="form-box" method="POST" enctype="multipart/form-data" id="match-form">
+        {% if error %}
+            <p class="error-text">{{ error }}</p>
+        {% endif %}
+
+        <!-- Drag & Drop Zone -->
+        <div class="upload-zone" id="drop-zone">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">
+                <h4 id="file-display-name">Drag & Drop Resume Here</h4>
+                <p>or click to browse local files (PDF & DOCX supported)</p>
+            </div>
+            <input type="file" id="resume-file" name="resume" accept=".pdf,.docx" required onchange="handleFileSelected(this)">
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label for="category">Select Job Domain</label>
+                <select id="category" name="category" required onchange="updateRolesForJobMatch()">
+                    <option value="">Select Domain</option>
+                    <option value="IT" {% if category == "IT" %}selected{% endif %}>Information Technology (IT)</option>
+                    <option value="Non-IT" {% if category == "Non-IT" %}selected{% endif %}>Non-IT Engineering / Ops</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="job_role">Select Target Role</label>
+                <select id="job_role" name="target_role" required>
+                    <option value="">Select Career Path</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label for="job_description">Job Description / Requirements Text</label>
+            <textarea id="job_description" name="job_description" placeholder="Paste the job description here..." required>{% if job_description %}{{ job_description }}{% endif %}</textarea>
+        </div>
+
+        <button type="submit" class="btn primary-btn" style="margin-top: 10px;">Calculate Match Level ✦</button>
+    </form>
+
+    <!-- Match Results Rendering -->
+    {% if match_score is defined %}
+    <div class="results-wrap">
+        <div class="report-grid">
+            <!-- Score Card -->
+            <div class="report-card">
+                <h3>Match Compatibility</h3>
+                <div class="score" style="font-size: 2.8rem;">{{ match_score }} / 10</div>
+                <div class="progress-bar" style="height: 10px; margin-top: 10px;">
+                    <div class="progress-fill" style="width: {{ match_score * 10 }}%;"></div>
+                </div>
+            </div>
+
+            <!-- Domain Info -->
+            <div class="report-card" style="display: flex; flex-direction: column; justify-content: center;">
+                <h3>Domain Scope</h3>
+                <p style="margin: 4px 0;">Domain: <strong style="color:var(--primary);">{{ category }}</strong></p>
+                <p style="margin: 4px 0;">Target Career: <strong style="color:var(--secondary);">{{ target_role }}</strong></p>
+            </div>
+
+            <!-- Recommended Alternate Roles -->
+            <div class="report-card">
+                <h3>Alternate Fit Suggestions</h3>
+                <p style="margin-bottom: 8px;">Your profile also fits these pathways:</p>
+                <div class="skills-list">
+                    {% if recommended_roles %}
+                        {% for role in recommended_roles %}
+                            <span class="skill-tag found" style="background: rgba(99, 102, 241, 0.08); color: #818cf8; border-color: rgba(99, 102, 241, 0.2);">{{ role }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="font-style: italic; color: var(--text-muted);">No alternatives found</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyword Alignment Grids -->
+        <div class="report-grid second-grid">
+            <!-- Matched Keywords -->
+            <div class="report-card">
+                <h3 style="color: #34d399;">✔ Matched Job Keywords</h3>
+                <p style="margin-bottom: 12px;">These terms in the JD match your resume:</p>
+                <div class="skills-list">
+                    {% if matched_keywords %}
+                        {% for kw in matched_keywords %}
+                            <span class="skill-tag found">{{ kw }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="font-style: italic; color: var(--text-muted);">No keyword overlaps found</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Missing Keywords -->
+            <div class="report-card">
+                <h3 style="color: #f87171;">✖ Missing Job Keywords</h3>
+                <p style="margin-bottom: 12px;">Consider adding these keywords to improve match scores:</p>
+                <div class="skills-list">
+                    {% if missing_keywords %}
+                        {% for kw in missing_keywords %}
+                            <span class="skill-tag missing">{{ kw }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <span class="skill-tag found">Matches all requirements perfectly!</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Matching Suggestions -->
+        <div class="report-card second-grid">
+            <h3>💡 Match Optimization Suggestions</h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                {% if suggestions %}
+                    {% for item in suggestions %}
+                        <li style="display: flex; align-items: start; gap: 8px;">
+                            <span style="color: var(--primary);">✦</span>
+                            <span style="color: var(--text-muted); font-size: 0.95rem;">{{ item }}</span>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li style="color: #34d399; font-weight: 600;">Your resume aligns well with this job description.</li>
+                {% endif %}
             </ul>
         </div>
-    </nav>
 
-    <section class="page-section">
-        <div class="glow-line"></div>
-        <h1 class="main-title">Resume vs Job Match</h1>
-        <p class="sub-text">
-            Upload your resume, choose category and career path, then paste a job description.
-        </p>
-
-        <form class="form-box center-form" method="POST" enctype="multipart/form-data">
-            {% if error %}
-                <p class="error-text">{{ error }}</p>
-            {% endif %}
-
-            <input type="file" name="resume" accept=".pdf,.docx" required>
-
-            <select id="category" name="category" required onchange="updateRolesForJobMatch()">
-                <option value="">Select Category</option>
-                <option value="IT" {% if category == "IT" %}selected{% endif %}>IT</option>
-                <option value="Non-IT" {% if category == "Non-IT" %}selected{% endif %}>Non-IT</option>
-            </select>
-
-            <select id="job_role" name="target_role" required>
-                <option value="">Select Career Path</option>
-            </select>
-
-            <textarea name="job_description" placeholder="Paste job description here..." required>{% if job_description %}{{ job_description }}{% endif %}</textarea>
-
-            <button type="submit" class="btn primary-btn">Check Match</button>
-        </form>
-
-        {% if match_score is defined %}
-        <div class="results-wrap">
-            <div class="report-grid">
-                <div class="report-card">
-                    <h3>Match Score</h3>
-                    <p class="score">{{ match_score }} / 10</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ match_score * 10 }}%;"></div>
-                    </div>
-                </div>
-
-                <div class="report-card">
-                    <h3>Category</h3>
-                    <p>{{ category }}</p>
-                </div>
-
-                <div class="report-card">
-                    <h3>Career Path</h3>
-                    <p>{{ target_role }}</p>
-                </div>
-
-                <div class="report-card">
-                    <h3>Recommended Roles</h3>
-                    <p>
-                        {% if recommended_roles %}
-                            {{ recommended_roles | join(', ') }}
-                        {% else %}
-                            No suggestions available
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-
-            <div class="report-grid second-grid">
-                <div class="report-card">
-                    <h3>Matched Keywords</h3>
-                    <p>
-                        {% if matched_keywords %}
-                            {{ matched_keywords | join(', ') }}
-                        {% else %}
-                            No strong keyword matches found
-                        {% endif %}
-                    </p>
-                </div>
-
-                <div class="report-card">
-                    <h3>Missing Keywords</h3>
-                    <p>
-                        {% if missing_keywords %}
-                            {{ missing_keywords | join(', ') }}
-                        {% else %}
-                            No important keywords missing
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-
-            <div class="report-grid second-grid">
-                <div class="report-card">
-                    <h3>Suggestions</h3>
-                    <p>
-                        {% if suggestions %}
-                            {% for item in suggestions %}
-                                • {{ item }}<br>
-                            {% endfor %}
-                        {% else %}
-                            Your resume matches well.
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-
-            <div class="download-wrap">
-                <a href="/download-report" class="btn primary-btn">Download PDF Report</a>
-            </div>
-        </div>
-        {% endif %}
-    </section>
-
-    <div class="chatbot-fab" onclick="toggleChat()">💬</div>
-
-    <div class="chatbot-panel" id="chat-window">
-        <div class="chatbot-header">
-            <span>AI Assistant</span>
-            <button type="button" class="chatbot-close" onclick="toggleChat()">×</button>
-        </div>
-
-        <div id="chat-messages" class="chat-messages"></div>
-
-        <div class="chat-actions">
-            <button type="button" onclick="setMode('chat')">Chat</button>
-            <button type="button" onclick="setMode('resume')">Resume</button>
-            <button type="button" onclick="setMode('rewrite')">Rewrite</button>
-        </div>
-
-        <div class="chat-input-box">
-            <input id="chat-input" type="text" placeholder="Ask about resume, jobs, skills...">
-            <button type="button" onclick="sendMessage()">➤</button>
+        <!-- PDF Report download -->
+        <div class="download-wrap" style="margin-top: 40px; display: flex; justify-content: center; gap: 15px;">
+            <a href="/download-report" class="btn primary-btn">Download Match PDF Report ✦</a>
         </div>
     </div>
+    {% endif %}
+</section>
+{% endblock %}
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% block extra_js %}
+<script>
+    // Drag & drop handlers
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('resume-file');
+    const fileDisplayName = document.getElementById('file-display-name');
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const category = document.getElementById("category");
-            const roleDropdown = document.getElementById("job_role");
-            const selectedRole = {{ target_role|tojson if target_role is defined else '""' }};
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
 
-            if (category.value) {
-                updateRolesForJobMatch();
-                if (selectedRole) {
-                    roleDropdown.value = selectedRole;
-                }
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    }
+
+    function unhighlight(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+    }
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        let dt = e.dataTransfer;
+        let files = dt.files;
+        fileInput.files = files;
+        handleFileSelected(fileInput);
+    }
+
+    function handleFileSelected(input) {
+        if (input.files && input.files[0]) {
+            const fileName = input.files[0].name;
+            fileDisplayName.innerText = `📄 Selected: ${fileName}`;
+            dropZone.style.borderColor = 'var(--primary)';
+            dropZone.style.background = 'rgba(34, 211, 238, 0.04)';
+        } else {
+            fileDisplayName.innerText = "Drag & Drop Resume Here";
+            dropZone.style.borderColor = 'var(--border-glass)';
+            dropZone.style.background = 'rgba(255, 255, 255, 0.01)';
+        }
+    }
+
+    // Role loading script
+    document.addEventListener("DOMContentLoaded", function () {
+        const category = document.getElementById("category");
+        const roleDropdown = document.getElementById("job_role");
+        const selectedRole = {{ target_role|tojson if target_role is defined else '""' }};
+
+        if (category.value) {
+            updateRolesForJobMatch();
+            if (selectedRole) {
+                roleDropdown.value = selectedRole;
             }
-        });
-    </script>
-</body>
-</html>
+        }
+    });
+</script>
+{% endblock %}

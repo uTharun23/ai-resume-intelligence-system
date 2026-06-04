@@ -1,53 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload & Analyze</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <div class="logo">AI Resume Intelligence</div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/builder">Build Resume</a></li>
-                <li><a href="/upload">Upload & Analyze</a></li>
-                <li><a href="/job-match">Job Match</a></li>
-                <li><a href="/career">Career Suggestions</a></li>
-                <li><a href="/report">Report</a></li>
-            </ul>
+{% extends "base.html" %}
+
+{% block title %}Upload Resume | AI Resume Intelligence System{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="glow-line"></div>
+    <h1 class="main-title">Direct Resume Audit</h1>
+    <p class="sub-text">Upload your current PDF or DOCX resume to get a detailed rating and identify critical career skill gaps.</p>
+
+    <form class="form-box" method="POST" enctype="multipart/form-data" id="upload-form">
+        {% if error %}
+            <p class="error-text">{{ error }}</p>
+        {% endif %}
+
+        <!-- Premium Drag and Drop Upload Zone -->
+        <div class="upload-zone" id="drop-zone">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">
+                <h4 id="file-display-name">Drag & Drop Resume Here</h4>
+                <p>or click to browse local files (PDF & DOCX supported)</p>
+            </div>
+            <input type="file" id="resume-file" name="resume" accept=".pdf,.docx" required onchange="handleFileSelected(this)">
         </div>
-    </nav>
 
-    <section class="page-section">
-        <div class="glow-line"></div>
-        <h1>Upload & Analyze Resume</h1>
-        <p class="sub-text">Upload your resume and get a smart score out of 10.</p>
-
-        <form class="form-box" method="POST" enctype="multipart/form-data">
-
-            {% if error %}
-                <p style="color:#fb7185; font-weight:600;">{{ error }}</p>
-            {% endif %}
-
-            <input type="file" name="resume" accept=".pdf,.docx" required>
-
+        <div>
+            <label for="category">Select Job Domain</label>
             <select id="category" name="category" required onchange="updateRoles()">
-                <option value="">Select Category</option>
-                <option value="IT">IT</option>
-                <option value="Non-IT">Non-IT</option>
+                <option value="">Select Domain</option>
+                <option value="IT">Information Technology (IT)</option>
+                <option value="Non-IT">Non-IT Engineering / Ops</option>
             </select>
+        </div>
 
+        <div>
+            <label for="role">Select Target Role</label>
             <select id="role" name="target_role" required>
-                <option>Select Career Path</option>
+                <option value="">Select Career Path</option>
             </select>
+        </div>
 
-            <button type="submit" class="btn primary-btn">Analyze Resume</button>
-        </form>
-    </section>
+        <button type="submit" class="btn primary-btn" style="margin-top: 10px;">Run AI Analysis Audit ✦</button>
+    </form>
+</section>
+{% endblock %}
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+{% block extra_js %}
+<script>
+    // Drag and drop event listeners
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('resume-file');
+    const fileDisplayName = document.getElementById('file-display-name');
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    }
+
+    function unhighlight(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+    }
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        let dt = e.dataTransfer;
+        let files = dt.files;
+        fileInput.files = files;
+        handleFileSelected(fileInput);
+    }
+
+    function handleFileSelected(input) {
+        if (input.files && input.files[0]) {
+            const fileName = input.files[0].name;
+            fileDisplayName.innerText = `📄 Selected: ${fileName}`;
+            dropZone.style.borderColor = 'var(--primary)';
+            dropZone.style.background = 'rgba(34, 211, 238, 0.04)';
+        } else {
+            fileDisplayName.innerText = "Drag & Drop Resume Here";
+            dropZone.style.borderColor = 'var(--border-glass)';
+            dropZone.style.background = 'rgba(255, 255, 255, 0.01)';
+        }
+    }
+</script>
+{% endblock %}
