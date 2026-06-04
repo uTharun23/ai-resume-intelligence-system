@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Suggestions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <div class="logo">AI Resume Intelligence</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/builder">Build Resume</a></li>
+            <li><a href="/upload">Upload & Analyze</a></li>
+            <li><a href="/job-match">Job Match</a></li>
+            <li><a href="/career" class="active">Career Suggestions</a></li>
+            <li><a href="/report">Report</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="page-section">
+    <div class="glow-line"></div>
+
+    <h1 class="main-title">AI Career Guidance</h1>
+    <p class="sub-text">Upload your resume and get personalized career direction, skills, and project ideas.</p>
+
+    <form class="form-box center-form" method="POST" enctype="multipart/form-data">
+        {% if error %}
+            <p class="error-text">{{ error }}</p>
+        {% endif %}
+
+        <input type="file" name="resume" required>
+        <button class="btn primary-btn">Get Suggestions</button>
+    </form>
+
+    {% if career_paths %}
+    <div class="report-grid" style="margin-top:40px;">
+
+        <!-- Career Paths -->
+        <div class="report-card reveal">
+            <h3>🚀 Career Paths</h3>
+            <p>{{ career_paths | join(', ') }}</p>
+        </div>
+
+        <!-- Skills -->
+        <div class="report-card reveal">
+            <h3>📚 Skills to Learn</h3>
+            <p>{{ skills | join(', ') }}</p>
+        </div>
+
+        <!-- Projects -->
+        <div class="report-card reveal">
+            <h3>💡 Project Ideas</h3>
+            <p>{{ projects | join(', ') }}</p>
+        </div>
+
+    </div>
+    {% endif %}
+</section>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
