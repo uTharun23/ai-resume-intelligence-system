@@ -57,58 +57,41 @@ def builder():
 def generate_resume():
     data = request.form
 
-    theme = data.get("resume_style", "tech").lower().strip()
+    layout = data.get("resume_layout", "left").lower().strip()
+    font = data.get("resume_font", "jakarta").lower().strip()
+    color = data.get("resume_color", "cyan").lower().strip()
     
-    # 1. Custom Styles Config
-    if theme == "classic":
-        p_color = colors.HexColor('#1e1e10')
+    # 1. Accent Color Mapping
+    color_map = {
+        "cyan": "#22d3ee",
+        "slate": "#64748b",
+        "indigo": "#4f46e5",
+        "crimson": "#dc2626",
+        "emerald": "#10b981",
+        "gold": "#d97706",
+        "orange": "#ea580c",
+        "purple": "#a855f7",
+        "charcoal": "#1e1e10",
+        "violet": "#7c3aed"
+    }
+    accent_hex = color_map.get(color, "#22d3ee")
+    p_color = colors.HexColor(accent_hex)
+    
+    # 2. Typography Font Pairing (ReportLab built-in fallbacks)
+    if font in ["playfair", "times"]:
         t_font = 'Times-Bold'
         b_font = 'Times-Roman'
-        align = 1  # Centered
-    elif theme == "executive":
-        p_color = colors.HexColor('#4f46e5')
-        t_font = 'Helvetica-Bold'
-        b_font = 'Helvetica'
-        align = 0  # Left aligned
-    elif theme == "minimal":
-        p_color = colors.HexColor('#475569')
-        t_font = 'Helvetica-Bold'
-        b_font = 'Helvetica'
-        align = 0
-    elif theme == "creative":
-        p_color = colors.HexColor('#ea580c')
-        t_font = 'Helvetica-Bold'
-        b_font = 'Helvetica'
-        align = 0
-    elif theme == "academic":
-        p_color = colors.HexColor('#111827')
-        t_font = 'Times-Bold'
-        b_font = 'Times-Roman'
-        align = 1  # Centered
-    elif theme == "bold":
-        p_color = colors.HexColor('#991b1b')
-        t_font = 'Helvetica-Bold'
-        b_font = 'Helvetica'
-        align = 0
-    elif theme == "startup":
-        p_color = colors.HexColor('#7e22ce')
+    elif font in ["fira", "courier"]:
         t_font = 'Courier-Bold'
         b_font = 'Courier'
-        align = 0
-    elif theme == "luxury":
-        p_color = colors.HexColor('#b45309')
-        t_font = 'Times-Bold'
-        b_font = 'Times-Roman'
-        align = 0
-    elif theme == "emerald":
-        p_color = colors.HexColor('#047857')
+    else:  # outfit, jakarta, inter (Helvetica pairs)
         t_font = 'Helvetica-Bold'
         b_font = 'Helvetica'
-        align = 0
-    else:  # tech (default)
-        p_color = colors.HexColor('#0891b2')
-        t_font = 'Courier-Bold'
-        b_font = 'Courier'
+        
+    # 3. Alignments and Headers Border Styling
+    if layout == "center":
+        align = 1  # Centered
+    else:
         align = 0  # Left aligned
 
     title_style = ParagraphStyle(
@@ -116,7 +99,7 @@ def generate_resume():
         fontName=t_font,
         fontSize=24,
         leading=28,
-        textColor=p_color,
+        textColor=p_color if layout != "center" else colors.HexColor('#0f172a'),
         alignment=align,
         spaceAfter=6
     )

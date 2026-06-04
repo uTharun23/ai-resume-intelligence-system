@@ -766,238 +766,111 @@ a {
 }
 
 /* Pre-coded Paper Resume Themes */
-.resume-paper.style-tech {
-    font-family: 'Fira Code', monospace;
-    border-top: 8px solid #22d3ee;
-    background-color: #fafbfc;
-    color: #0f172a;
+/* Dynamic Resume Preview Styles */
+.resume-paper {
+    --accent: #22d3ee;
+    background-color: #ffffff;
+    color: #1e293b;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.3s ease;
 }
 
-.resume-paper.style-tech h2 {
+/* 1. Dynamic Fonts (Famous UI / Serif Families) */
+.resume-paper.font-outfit { font-family: 'Outfit', sans-serif; }
+.resume-paper.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+.resume-paper.font-inter { font-family: 'Inter', sans-serif; }
+.resume-paper.font-playfair { font-family: 'Playfair Display', serif; }
+.resume-paper.font-times { font-family: 'Playfair Display', serif; }
+.resume-paper.font-fira { font-family: 'Fira Code', monospace; }
+.resume-paper.font-courier { font-family: 'Fira Code', monospace; }
+
+/* 2. Premium Accent Colors */
+.resume-paper.color-cyan { --accent: #22d3ee; }
+.resume-paper.color-slate { --accent: #64748b; }
+.resume-paper.color-indigo { --accent: #4f46e5; }
+.resume-paper.color-crimson { --accent: #dc2626; }
+.resume-paper.color-emerald { --accent: #10b981; }
+.resume-paper.color-gold { --accent: #d97706; }
+.resume-paper.color-orange { --accent: #ea580c; }
+.resume-paper.color-purple { --accent: #a855f7; }
+.resume-paper.color-charcoal { --accent: #1e1e10; }
+.resume-paper.color-violet { --accent: #7c3aed; }
+
+/* 3. Structural Layout Formats */
+/* Left Aligned Clean */
+.resume-paper.layout-left {
+    border-top: 8px solid var(--accent);
+    text-align: left;
+    background-color: #ffffff;
+}
+.resume-paper.layout-left h2 {
     color: #0f172a;
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 800;
-    border-bottom: 2px dashed #cbd5e1;
-    padding-bottom: 8px;
 }
-
-.resume-paper.style-tech h3 {
-    color: #0891b2;
-    font-size: 12px;
+.resume-paper.layout-left h3 {
+    color: var(--accent);
+    font-size: 11.5px;
     font-weight: 700;
-    margin-top: 15px;
-    margin-bottom: 6px;
+    margin-top: 14px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
-.resume-paper.style-classic {
-    font-family: 'Playfair Display', serif;
+/* Centered Academic Classic */
+.resume-paper.layout-center {
     border: 1px solid #e2e8f0;
+    text-align: center;
     background-color: #fffbf7; /* elegant warm white */
-    color: #1e1e10;
-    padding: 40px;
 }
-
-.resume-paper.style-classic h2 {
+.resume-paper.layout-center h2 {
+    color: #1e1e10;
     font-size: 22px;
     font-weight: 700;
     text-align: center;
-    border-bottom: 1px solid #1e1e10;
-    padding-bottom: 10px;
 }
-
-.resume-paper.style-classic .resume-contact {
+.resume-paper.layout-center .resume-contact {
     text-align: center;
     font-style: italic;
-    margin-bottom: 15px;
+    color: #555544;
 }
-
-.resume-paper.style-classic h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
+.resume-paper.layout-center h3 {
+    color: #1e1e10;
+    font-size: 12.5px;
     font-weight: 700;
     border-bottom: 1px solid rgba(0,0,0,0.15);
     margin-top: 15px;
     margin-bottom: 6px;
+    text-transform: uppercase;
+    text-align: left;
+}
+.resume-paper.layout-center .resume-section-body {
+    text-align: left;
 }
 
-.resume-paper.style-executive {
-    font-family: 'Outfit', sans-serif;
-    border-left: 8px solid #4f46e5;
+/* LaTeX Underlined Layout */
+.resume-paper.layout-latex {
+    border: 1px solid #e2e8f0;
+    text-align: left;
     background-color: #ffffff;
-    color: #334155;
+    padding: 30px;
 }
-
-.resume-paper.style-executive h2 {
-    color: #1e1b4b;
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 4px;
-}
-
-.resume-paper.style-executive h3 {
-    color: #4f46e5;
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 14px;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 3px;
-    text-transform: uppercase;
-}
-
-.resume-paper.style-minimal {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    border-top: 4px solid #64748b;
-    background-color: #f8fafc;
-    color: #334155;
-}
-.resume-paper.style-minimal h2 {
-    color: #0f172a;
-    font-size: 21px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-.resume-paper.style-minimal h3 {
-    color: #475569;
-    font-size: 11px;
-    font-weight: 700;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    border-bottom: 1px solid #cbd5e1;
-    padding-bottom: 2px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.resume-paper.style-creative {
-    font-family: 'Outfit', sans-serif;
-    border-top: 8px solid #f97316;
-    background-color: #fafaf9;
-    color: #44403c;
-}
-.resume-paper.style-creative h2 {
-    color: #1c1917;
-    font-size: 22px;
-    font-weight: 800;
-}
-.resume-paper.style-creative h3 {
-    color: #ea580c;
-    font-size: 11.5px;
-    font-weight: 700;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-}
-
-.resume-paper.style-academic {
-    font-family: 'Playfair Display', serif;
-    background-color: #ffffff;
+.resume-paper.layout-latex h2 {
     color: #111827;
-}
-.resume-paper.style-academic h2 {
-    font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-}
-.resume-paper.style-academic .resume-contact {
-    text-align: center;
-    margin-bottom: 15px;
-}
-.resume-paper.style-academic h3 {
-    font-size: 12px;
-    font-weight: 700;
-    border-bottom: 1.5px solid #111827;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.resume-paper.style-bold {
-    font-family: 'Outfit', sans-serif;
-    border-left: 8px solid #dc2626;
-    background-color: #fdfcfa;
-    color: #1c1917;
-}
-.resume-paper.style-bold h2 {
-    color: #1c1917;
-    font-size: 22px;
-    font-weight: 800;
-}
-.resume-paper.style-bold h3 {
-    color: #991b1b;
-    font-size: 11.5px;
-    font-weight: 800;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    border-bottom: 1px solid #fecaca;
-    padding-bottom: 2px;
-    text-transform: uppercase;
-}
-
-.resume-paper.style-startup {
-    font-family: 'Fira Code', monospace;
-    border-top: 8px solid #a855f7;
-    background-color: #faf5ff;
-    color: #3b0764;
-}
-.resume-paper.style-startup h2 {
-    color: #1e1b4b;
     font-size: 20px;
     font-weight: 700;
-}
-.resume-paper.style-startup h3 {
-    color: #7e22ce;
-    font-size: 11px;
-    font-weight: 700;
-    margin-top: 12px;
-    margin-bottom: 4px;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
-
-.resume-paper.style-luxury {
-    font-family: 'Playfair Display', serif;
-    border-top: 8px solid #d97706;
-    background-color: #fffbeb;
-    color: #451a03;
-}
-.resume-paper.style-luxury h2 {
-    color: #78350f;
-    font-size: 22px;
-    font-weight: 700;
-}
-.resume-paper.style-luxury h3 {
-    color: #b45309;
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    border-bottom: 1px solid #fde68a;
-    padding-bottom: 2px;
-    text-transform: uppercase;
-}
-
-.resume-paper.style-emerald {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    border-top: 8px solid #10b981;
-    background-color: #f0fdf4;
-    color: #064e3b;
-}
-.resume-paper.style-emerald h2 {
-    color: #064e3b;
-    font-size: 21px;
-    font-weight: 800;
-}
-.resume-paper.style-emerald h3 {
-    color: #047857;
+.resume-paper.layout-latex h3 {
+    color: var(--accent);
     font-size: 11.5px;
     font-weight: 700;
-    margin-top: 12px;
+    margin-top: 15px;
     margin-bottom: 4px;
-    border-bottom: 1px solid #a7f3d0;
-    padding-bottom: 2px;
+    border-bottom: 1.5px solid var(--accent);
+    padding-bottom: 3px;
     text-transform: uppercase;
 }
 

@@ -8,20 +8,48 @@
     <h1 class="main-title">Premium Resume Builder</h1>
     <p class="sub-text">Build your resume with responsive fields and download a tailored PDF matching your chosen theme.</p>
 
-    <!-- Theme / Style Selector Chips -->
-    <div style="max-width: 800px; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
-        <label style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">Select Document Theme (10 Premium Layouts):</label>
-        <div class="style-selector" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
-            <div class="style-chip active" onclick="setResumeTheme('tech', this)">👾 Modern Tech</div>
-            <div class="style-chip" onclick="setResumeTheme('classic', this)">📜 Classic Ivory</div>
-            <div class="style-chip" onclick="setResumeTheme('executive', this)">💼 Executive Navy</div>
-            <div class="style-chip" onclick="setResumeTheme('minimal', this)">🌿 Minimal Slate</div>
-            <div class="style-chip" onclick="setResumeTheme('creative', this)">🍊 Creative Amber</div>
-            <div class="style-chip" onclick="setResumeTheme('academic', this)">🎓 Academic Serif</div>
-            <div class="style-chip" onclick="setResumeTheme('bold', this)">🔥 Editorial Red</div>
-            <div class="style-chip" onclick="setResumeTheme('startup', this)">🚀 Silicon Valley</div>
-            <div class="style-chip" onclick="setResumeTheme('luxury', this)">👑 Royal Gold</div>
-            <div class="style-chip" onclick="setResumeTheme('emerald', this)">🌲 Emerald Clean</div>
+    <!-- Dynamic Customization Panel -->
+    <div style="max-width: 900px; margin: 0 auto 25px; padding: 20px; background: var(--panel-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-md); backdrop-filter: blur(12px); display: flex; flex-direction: column; gap: 16px;">
+        
+        <!-- 1. Layout -->
+        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+            <label style="font-weight: 700; font-size: 0.88rem; color: var(--primary); min-width: 130px; text-align: left;">1. Layout Format:</label>
+            <div class="style-selector" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 0;">
+                <div class="style-chip layout-chip active" onclick="setResumeLayout('left', this)">👾 Modern Top-Border</div>
+                <div class="style-chip layout-chip" onclick="setResumeLayout('center', this)">📜 Centered Academic</div>
+                <div class="style-chip layout-chip" onclick="setResumeLayout('latex', this)">🎓 LaTeX Underline</div>
+            </div>
+        </div>
+
+        <!-- 2. Typography -->
+        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+            <label style="font-weight: 700; font-size: 0.88rem; color: var(--secondary); min-width: 130px; text-align: left;">2. Premium Font:</label>
+            <div class="style-selector" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 0;">
+                <div class="style-chip font-chip active" onclick="setResumeFont('jakarta', this)">Plus Jakarta</div>
+                <div class="style-chip font-chip" onclick="setResumeFont('outfit', this)">Outfit</div>
+                <div class="style-chip font-chip" onclick="setResumeFont('inter', this)">Inter</div>
+                <div class="style-chip font-chip" onclick="setResumeFont('playfair', this)">Playfair Display</div>
+                <div class="style-chip font-chip" onclick="setResumeFont('times', this)">Times Serif</div>
+                <div class="style-chip font-chip" onclick="setResumeFont('fira', this)">Fira Code</div>
+                <div class="style-chip font-chip" onclick="setResumeFont('courier', this)">Courier Monospace</div>
+            </div>
+        </div>
+
+        <!-- 3. Accent Palette -->
+        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+            <label style="font-weight: 700; font-size: 0.88rem; color: var(--accent); min-width: 130px; text-align: left;">3. Accent Color:</label>
+            <div class="style-selector" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 0;">
+                <div class="style-chip color-chip active" onclick="setResumeColor('cyan', this)">Neon Cyan</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('slate', this)">Slate Gray</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('indigo', this)">Indigo Navy</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('crimson', this)">Crimson Red</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('emerald', this)">Emerald Green</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('gold', this)">Royal Gold</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('orange', this)">Sunset Orange</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('purple', this)">Startup Purple</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('charcoal', this)">Dark Charcoal</div>
+                <div class="style-chip color-chip" onclick="setResumeColor('violet', this)">Deep Violet</div>
+            </div>
         </div>
     </div>
 
@@ -30,7 +58,9 @@
         <form method="POST" action="/generate-resume" class="form-box" style="margin: 0;">
             <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">Personal Information</h3>
             
-            <input type="hidden" name="resume_style" id="resume_style_input" value="tech">
+            <input type="hidden" name="resume_layout" id="resume_layout_input" value="left">
+            <input type="hidden" name="resume_font" id="resume_font_input" value="jakarta">
+            <input type="hidden" name="resume_color" id="resume_color_input" value="cyan">
 
             <div class="form-row">
                 <div>
@@ -91,7 +121,7 @@
                 <span>👁️</span> Real-time Document Preview
             </h3>
             
-            <div id="resume-paper" class="resume-paper style-tech">
+            <div id="resume-paper" class="resume-paper layout-left font-jakarta color-cyan">
                 <h2 id="p_name">Your Name</h2>
                 <div id="p_contact" class="resume-contact">Email | Phone | LinkedIn</div>
                 
@@ -143,19 +173,43 @@ function updatePreview() {
     document.getElementById("p_experience").innerText = experience || "Summarize your professional work, internships, or training history.";
 }
 
-function setResumeTheme(themeName, element) {
-    // Update active class on chips
-    const chips = document.querySelectorAll(".style-chip");
+let currentLayout = "left";
+let currentFont = "jakarta";
+let currentColor = "cyan";
+
+function setResumeLayout(layoutName, element) {
+    const chips = document.querySelectorAll(".layout-chip");
     chips.forEach(chip => chip.classList.remove("active"));
-    
     element.classList.add("active");
     
-    // Update input value
-    document.getElementById("resume_style_input").value = themeName;
+    currentLayout = layoutName;
+    document.getElementById("resume_layout_input").value = layoutName;
+    updatePaperClasses();
+}
+
+function setResumeFont(fontName, element) {
+    const chips = document.querySelectorAll(".font-chip");
+    chips.forEach(chip => chip.classList.remove("active"));
+    element.classList.add("active");
     
-    // Update preview class
+    currentFont = fontName;
+    document.getElementById("resume_font_input").value = fontName;
+    updatePaperClasses();
+}
+
+function setResumeColor(colorName, element) {
+    const chips = document.querySelectorAll(".color-chip");
+    chips.forEach(chip => chip.classList.remove("active"));
+    element.classList.add("active");
+    
+    currentColor = colorName;
+    document.getElementById("resume_color_input").value = colorName;
+    updatePaperClasses();
+}
+
+function updatePaperClasses() {
     const paper = document.getElementById("resume-paper");
-    paper.className = "resume-paper style-" + themeName;
+    paper.className = `resume-paper layout-${currentLayout} font-${currentFont} color-${currentColor}`;
 }
 </script>
 {% endblock %}
