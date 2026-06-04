@@ -2,9 +2,9 @@
 
 An advanced, premium-styled AI-powered resume intelligence portal designed for job seekers, students, and freshers. This portal bridges career skill gaps, analyzes alignment with specific job description requirements, and compiles professional resumes with real-time visual styling themes.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo%20on%20Vercel-teal?style=for-the-badge&logo=vercel&logoColor=white)](https://ai-resume-intelligence-system-alpha.vercel.app/)
-[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+## 🌐 Live Demo
+
+[![🚀 View Live Demo](https://img.shields.io/badge/🚀%20View%20Live%20Demo-Visit%20Now-00C2A8?style=for-the-badge&logo=vercel&logoColor=white)](https://ai-resume-intelligence-system-alpha.vercel.app/)
 
 ---
 
