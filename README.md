@@ -59,7 +59,7 @@ The interactive dual-pane builder enables job seekers to generate **210 unique s
 
 
 ### Resume Analytics Report (Dynamic Score Circle)
-<img width="900" alt="Report Scoring" src="https://github.com/user-attachments/assets/bc373be4-107e-4f27-ae4d-538ae0ffb63e" />
+<img width="1892" height="943" alt="image" src="https://github.com/user-attachments/assets/96f89c5c-ebf8-46c7-8dc9-070e783c3745" />
 
 ### Job Description Alignment Engine
 <img width="1861" height="969" alt="image" src="https://github.com/user-attachments/assets/336038fa-08c7-401c-8a19-a29109ea1f4b" />
