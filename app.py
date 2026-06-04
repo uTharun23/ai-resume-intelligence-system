@@ -4,10 +4,13 @@ from werkzeug.utils import secure_filename
 
 # ------------------ CONFIG ------------------
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["ALLOWED_EXTENSIONS"] = {"pdf", "docx"}
 
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+if os.environ.get("VERCEL"):
+    app.config["UPLOAD_FOLDER"] = "/tmp"
+else:
+    app.config["UPLOAD_FOLDER"] = "uploads"
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # ------------------ IMPORT UTILS ------------------
 from utils.extractor import extract_resume_text
@@ -133,7 +136,7 @@ def generate_resume():
         spaceAfter=8
     )
 
-    file_path = "generated_resume.pdf"
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], "generated_resume.pdf")
     doc = SimpleDocTemplate(file_path, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
 
     content = []
@@ -315,8 +318,7 @@ def report():
 
 @app.route("/download-report")
 def download_report():
-    file_path = "report.pdf"
-
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], "report.pdf")
     doc = SimpleDocTemplate(file_path, rightMargin=45, leftMargin=45, topMargin=45, bottomMargin=45)
     
     title_style = ParagraphStyle(
