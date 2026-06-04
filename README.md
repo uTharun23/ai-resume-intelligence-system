@@ -48,22 +48,24 @@ The interactive dual-pane builder enables job seekers to generate **210 unique s
 <div align="center">
 
 ### Home Portal View
-<img width="900" alt="Home Screen" src="https://github.com/user-attachments/assets/07871aa4-54e6-484b-b3c4-68d11c427689" />
+<img width="1889" height="979" alt="image" src="https://github.com/user-attachments/assets/e72857f2-b289-4fd3-9084-28be8ba76692" />
 
 ### Premium Resume Builder (Dual-Pane)
-<img width="900" alt="Resume Builder" src="https://github.com/user-attachments/assets/422ea8af-876d-4c41-b87b-91833bb03e7a" />
+<img width="1900" height="961" alt="image" src="https://github.com/user-attachments/assets/bd73421c-308f-46f0-b64d-36415ae83a35" />
+
 
 ### Upload & Audit Module
-<img width="900" alt="Audit Scanner" src="https://github.com/user-attachments/assets/39bbf8be-752d-473f-869e-c3fe0cd34ea5" />
+<img width="1903" height="960" alt="image" src="https://github.com/user-attachments/assets/bd921dcd-da99-4e51-a844-66ea9fef1505" />
+
 
 ### Resume Analytics Report (Dynamic Score Circle)
 <img width="900" alt="Report Scoring" src="https://github.com/user-attachments/assets/bc373be4-107e-4f27-ae4d-538ae0ffb63e" />
 
 ### Job Description Alignment Engine
-<img width="900" alt="JD Matching" src="https://github.com/user-attachments/assets/a9f6df25-c332-4eb9-8c59-e9b0dfe716a0" />
+<img width="1861" height="969" alt="image" src="https://github.com/user-attachments/assets/336038fa-08c7-401c-8a19-a29109ea1f4b" />
 
 ### AI Career Copilot Chat Interface
-<img width="900" alt="AI Copilot" src="https://github.com/user-attachments/assets/c6c19ac7-250f-44b2-a82a-d90c585361e6" />
+<img width="1887" height="954" alt="image" src="https://github.com/user-attachments/assets/36aabc81-b795-4c6a-98cc-05580ed8699e" />
 
 </div>
 
