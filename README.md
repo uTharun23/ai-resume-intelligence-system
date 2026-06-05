@@ -36,7 +36,6 @@ Most available solutions focus on a single aspect of the hiring journey, forcing
 AI Resume Intelligence System addresses this challenge by providing a comprehensive, all-in-one career development ecosystem.
 
 ---
----
 
 ## 🛠️ Technologies Used
 
