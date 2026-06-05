@@ -36,6 +36,62 @@ Most available solutions focus on a single aspect of the hiring journey, forcing
 AI Resume Intelligence System addresses this challenge by providing a comprehensive, all-in-one career development ecosystem.
 
 ---
+---
+
+## 🛠️ Technologies Used
+
+### 🚀 Backend Development
+
+* 🐍 Python 3
+* 🌐 Flask Web Framework
+
+### 📄 Resume Processing & PDF Generation
+
+* 📑 ReportLab
+* 📖 PyPDF2
+* 📝 python-docx
+
+### 🎨 Frontend Development
+
+* 🌐 HTML5
+* 🎨 CSS3
+* ⚡ JavaScript (ES6)
+
+### 💡 User Interface & Experience
+
+* ✨ Glassmorphism Design
+* 📱 Responsive Web Design
+* 🎭 Dynamic Theme Engine
+* 🎨 Real-Time Resume Preview
+
+### 📊 Analytics & Processing
+
+* 🎯 ATS Resume Evaluation
+* 📈 Resume Scoring System
+* 🔍 Job Description Matching Engine
+* 🚀 Career Recommendation Engine
+
+### 🛠️ Development Tools
+
+* 💻 Visual Studio Code
+* 🔧 Git & GitHub
+* ☁️ Vercel Deployment Platform
+
+---
+
+## 📋 Core Modules
+
+| Module               | Functionality                                                 |
+| -------------------- | ------------------------------------------------------------- |
+| 📄 Resume Builder    | Generate professional resumes with multiple premium templates |
+| 📊 Resume Analyzer   | Evaluate resume quality and ATS compatibility                 |
+| 🎯 Job Match Engine  | Compare resumes against job descriptions                      |
+| 🚀 Career Roadmap    | Generate personalized learning paths and recommendations      |
+| 💬 AI Career Copilot | Interactive career assistance and resume guidance             |
+| 🎨 Theme Engine      | Customize resumes using 210+ style combinations               |
+
+---
+
 
 ## 💡 Solution Overview
 
