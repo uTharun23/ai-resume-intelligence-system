@@ -173,11 +173,11 @@ a {
 
 /* ------------------ HERO SECTION ------------------ */
 .hero {
-    min-height: 85vh;
+    min-height: clamp(60vh, 75vh, 85vh);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 80px 24px 60px;
+    padding: clamp(60px, 8vw, 100px) 24px clamp(40px, 6vw, 60px);
     position: relative;
 }
 
@@ -1556,9 +1556,19 @@ p, .sub-text, .section-subtitle {
         justify-content: center;
     }
 
+    .hero {
+        min-height: auto;
+        padding: 60px 16px 30px;
+    }
+
     .hero-stats {
         grid-template-columns: 1fr;
         gap: 16px;
+        margin-top: 24px;
+    }
+    
+    .page-section {
+        padding: 40px 16px 60px;
     }
     
     .form-row {
