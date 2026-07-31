@@ -57,14 +57,14 @@
             <!-- Score Card -->
             <div class="report-card">
                 <h3>Match Compatibility</h3>
-                <div class="score" style="font-size: 2.8rem;">{{ match_score }} / 10</div>
-                <div class="progress-bar" style="height: 10px; margin-top: 10px;">
+                <div class="large-numeric-display">{{ match_score }} <span>/ 10</span></div>
+                <div class="progress-bar">
                     <div class="progress-fill" style="width: {{ match_score * 10 }}%;"></div>
                 </div>
             </div>
 
             <!-- Domain Info -->
-            <div class="report-card" style="display: flex; flex-direction: column; justify-content: center;">
+            <div class="report-card stats-card-content">
                 <h3>Domain Scope</h3>
                 <p style="margin: 4px 0;">Domain: <strong style="color:var(--primary);">{{ category }}</strong></p>
                 <p style="margin: 4px 0;">Target Career: <strong style="color:var(--secondary);">{{ target_role }}</strong></p>
@@ -122,22 +122,25 @@
         <!-- Matching Suggestions -->
         <div class="report-card second-grid">
             <h3>💡 Match Optimization Suggestions</h3>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <ul class="suggestion-list">
                 {% if suggestions %}
                     {% for item in suggestions %}
-                        <li style="display: flex; align-items: start; gap: 8px;">
-                            <span style="color: var(--primary);">✦</span>
-                            <span style="color: var(--text-muted); font-size: 0.95rem;">{{ item }}</span>
+                        <li class="suggestion-item">
+                            <span class="bullet-spark">✦</span>
+                            <span class="suggestion-text">{{ item }}</span>
                         </li>
                     {% endfor %}
                 {% else %}
-                    <li style="color: #34d399; font-weight: 600;">Your resume aligns well with this job description.</li>
+                    <li class="suggestion-item" style="color: #34d399; font-weight: 600;">
+                        <span class="bullet-spark bullet-spark-success">🎉</span>
+                        <span class="suggestion-text" style="color: #34d399; font-weight: 600;">Your resume aligns well with this job description.</span>
+                    </li>
                 {% endif %}
             </ul>
         </div>
 
         <!-- PDF Report download -->
-        <div class="download-wrap" style="margin-top: 40px; display: flex; justify-content: center; gap: 15px;">
+        <div class="download-wrap">
             <a href="/download-report" class="btn primary-btn">Download Match PDF Report ✦</a>
         </div>
     </div>

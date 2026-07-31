@@ -1267,41 +1267,303 @@ a {
     }
 }
 
-/* ------------------ RESPONSIVENESS ------------------ */
+/* ------------------ UTILITY & RESPONSIVE HELPER CLASSES ------------------ */
+
+/* Customizer Panel Responsive Styling */
+.customizer-container {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    padding: clamp(16px, 3vw, 24px);
+    background: var(--panel-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 2vw, 16px);
+}
+
+.customizer-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.customizer-label {
+    font-weight: 700;
+    font-size: 0.88rem;
+    min-width: 130px;
+    text-align: left;
+}
+
+.customizer-label.label-primary {
+    color: var(--primary);
+}
+
+.customizer-label.label-secondary {
+    color: var(--secondary);
+}
+
+.customizer-label.label-accent {
+    color: var(--accent);
+}
+
+.builder-title-block {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.builder-title-block.mt-15 {
+    margin-top: 15px;
+}
+
+/* Score and Stats layout helper classes */
+.score-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.stats-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.large-numeric-display {
+    font-size: clamp(2.2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    margin: 10px 0;
+    color: var(--primary);
+    line-height: 1.1;
+}
+
+.large-numeric-display span {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Progress bar helpers */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 12px;
+    border: 1px solid var(--border-glass);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 99px;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.download-wrap {
+    margin-top: clamp(24px, 5vw, 40px);
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* Suggestions list helpers */
+.suggestion-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 0;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: start;
+    gap: 10px;
+}
+
+.bullet-spark {
+    color: var(--primary);
+    font-size: 1.1rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.bullet-spark-success {
+    color: var(--success);
+}
+
+.suggestion-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Touch targets and styles override forChips */
+.style-chip {
+    padding: 8px 16px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+/* Responsive typography utilities */
+h1, .main-title {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    line-height: 1.2;
+}
+
+h2, .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    line-height: 1.25;
+}
+
+h3 {
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    line-height: 1.3;
+}
+
+p, .sub-text, .section-subtitle {
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    line-height: 1.6;
+}
+
+/* Adjust card paddings responsively */
+.feature-card, .report-card, .glass-box {
+    padding: clamp(16px, 3.5vw, 24px);
+    border-radius: var(--radius-md);
+}
+
+/* Form block responsive settings */
+.form-box {
+    padding: clamp(16px, 4vw, 32px);
+    border-radius: var(--radius-md);
+    gap: clamp(16px, 3vw, 24px);
+}
+
+.form-row {
+    gap: clamp(12px, 3vw, 20px);
+}
+
+/* ------------------ RESPONSIVENESS OVERRIDES ------------------ */
+
 @media (max-width: 992px) {
     .navbar-inner {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        gap: 10px;
+    }
+    
+    .logo {
+        font-size: 1.4rem;
     }
     
     .nav-links {
-        justify-content: center;
-        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        width: auto;
+        max-width: 70%;
+        padding-bottom: 2px;
+        gap: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
     }
     
+    .nav-links::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome/Safari */
+    }
+    
+    .nav-links li {
+        flex-shrink: 0;
+    }
+    
+    .nav-links a {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
     .builder-layout {
         grid-template-columns: 1fr;
+        gap: 24px;
     }
     
     .resume-preview-panel {
         position: relative;
         top: 0;
         max-height: unset;
+        padding: 16px;
+    }
+
+    .resume-paper {
+        padding: 24px;
+        font-size: 9.5px;
     }
     
-    .hero h1 {
-        font-size: 3.2rem;
+    .resume-contact {
+        font-size: 8.5px;
+        margin-bottom: 10px;
+    }
+
+    .resume-paper h2 {
+        font-size: 18px;
+    }
+
+    .resume-paper h3 {
+        font-size: 10.5px;
+        margin-top: 12px;
+        margin-bottom: 4px;
     }
 }
 
 @media (max-width: 768px) {
+    .navbar-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .nav-links {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+    }
+
     .hero-stats {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
     
     .form-row {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
     
     .chatbot-panel {
@@ -1310,19 +1572,81 @@ a {
         bottom: 96px;
         height: 500px;
     }
+    
+    .btn {
+        min-height: 48px;
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
-    .hero h1 {
-        font-size: 2.4rem;
+    .navbar-inner {
+        padding: 10px 12px;
     }
-    
-    .btn {
-        width: 100%;
+
+    .nav-links {
+        justify-content: flex-start; /* scroll horizontally on tiny viewports */
     }
-    
+
+    .nav-links a {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
     .hero-buttons {
         flex-direction: column;
         width: 100%;
+        gap: 12px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .resume-paper {
+        padding: 16px;
+        font-size: 8px;
+    }
+    
+    .resume-contact {
+        font-size: 7.5px;
+        margin-bottom: 8px;
+    }
+
+    .resume-paper h2 {
+        font-size: 15px;
+    }
+
+    .resume-paper h3 {
+        font-size: 9px;
+        margin-top: 10px;
+        margin-bottom: 3px;
+    }
+    
+    .download-wrap .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .resume-paper {
+        padding: 12px;
+        font-size: 7.2px;
+    }
+    
+    .resume-contact {
+        font-size: 6.8px;
+        margin-bottom: 6px;
+    }
+
+    .resume-paper h2 {
+        font-size: 13px;
+    }
+
+    .resume-paper h3 {
+        font-size: 8px;
+        margin-top: 8px;
+        margin-bottom: 2px;
     }
 }

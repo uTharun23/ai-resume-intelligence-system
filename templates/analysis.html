@@ -15,7 +15,7 @@
     <!-- Metrics Row -->
     <div class="report-grid">
         <!-- Radial Score Card -->
-        <div class="report-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <div class="report-card score-card-content">
             <h3 style="margin-bottom: 20px;">AI Resume Score</h3>
             
             <div class="score-wrapper">
@@ -41,10 +41,10 @@
         </div>
 
         <!-- Word Count Card -->
-        <div class="report-card" style="display: flex; flex-direction: column; justify-content: center;">
+        <div class="report-card stats-card-content">
             <h3 style="display: flex; align-items: center; gap: 8px;"><span>📝</span> Word Statistics</h3>
-            <div style="font-size: 2.5rem; font-weight: 800; font-family: 'Outfit', sans-serif; margin: 10px 0; color: var(--primary);">
-                {{ word_count }} <span style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">words</span>
+            <div class="large-numeric-display">
+                {{ word_count }} <span>words</span>
             </div>
             <p>A standard recruiter-friendly resume contains between 300 to 600 words of targeted description.</p>
         </div>
@@ -104,17 +104,18 @@
         <div class="report-card">
             <h3>🚀 Expert Improvement Tips</h3>
             <p style="margin-bottom: 15px;">Follow these guidelines to optimize your document for the role:</p>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px;">
+            <ul class="suggestion-list">
                 {% if feedback %}
                     {% for item in feedback %}
-                        <li style="display: flex; align-items: start; gap: 10px;">
-                            <span style="color: var(--primary); font-size: 1.1rem; line-height: 1;">✦</span>
-                            <span style="font-size: 0.95rem; color: var(--text-muted);">{{ item }}</span>
+                        <li class="suggestion-item">
+                            <span class="bullet-spark">✦</span>
+                            <span class="suggestion-text">{{ item }}</span>
                         </li>
                     {% endfor %}
                 {% else %}
-                    <li style="display: flex; align-items: center; gap: 10px; color: #34d399; font-weight: 600;">
-                        <span>🎉</span> Excellent structure! Your resume complies with top standards.
+                    <li class="suggestion-item" style="color: #34d399; font-weight: 600;">
+                        <span class="bullet-spark bullet-spark-success">🎉</span>
+                        <span class="suggestion-text" style="color: #34d399; font-weight: 600;">Excellent structure! Your resume complies with top standards.</span>
                     </li>
                 {% endif %}
             </ul>
@@ -122,7 +123,7 @@
     </div>
 
     <!-- Download/Navigation Button -->
-    <div class="download-wrap" style="margin-top: 40px; display: flex; justify-content: center; gap: 15px;">
+    <div class="download-wrap">
         <a href="/upload" class="btn secondary-btn">← Upload Another</a>
         <a href="/download-report" class="btn primary-btn">Download PDF Report ✦</a>
     </div>
